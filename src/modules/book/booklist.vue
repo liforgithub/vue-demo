@@ -47,7 +47,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <Paging :page-num=bookObj.pageNum :total-count=bookObj.totalCount :page-size=bookObj.pageSize @call="changePageNum"></Paging>
+                    <Paging :page-obj="{pageObj}" @call="changePageNum" :page="page"></Paging>
                 </div>
             </div>
         </div>
@@ -65,8 +65,10 @@
         data() {
             return {
                 bookObj: {
-                    items: [],
-                    pageNum: 0,
+                    items: []
+                },
+                pageObj: {
+                    pageNum: 1,
                     pageSize: 10,
                     totalCount: 0
                 }
@@ -74,19 +76,27 @@
         },
         components: {
             Head,
-            Left
+            Left,
+            Paging
         },
         created() {
-            request
-                .get('/api/books/getBookList')
-                .then(res => {
-                    this.bookObj.items = res.dataList.splice(0, 10);
-                    this.bookObj.totalCount = res.totalCount;
-                });
+            this.queryBookList();
         },
         methods: {
-            changePageNum(pageNum) {
-                this.bookObj.pageNum = pageNum;
+            changePageNum(page) {
+                this.pageObj.pageNum = page;
+                this.queryBookList();
+            },
+            queryBookList() {
+                request
+                    .get('/api/books/getBookList', {
+                        pageNum: this.pageObj.pageNum - 1,
+                        pageSize: this.pageObj.pageSize
+                    })
+                    .then(res => {
+                        this.bookObj.items = res.dataList;
+                        this.pageObj.totalCount = res.totalCount;
+                    });
             }
         }
     }
