@@ -14,7 +14,7 @@
                 </li>
             </template>
             <template v-if="pageNum < totalPageNum">
-                <li v-on:click="_call(pageNum + 1)">
+                <li @click="_call(pageNum + 1)">
                     <a href="javascript:void(0)" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
