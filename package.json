@@ -9,12 +9,12 @@
   },
   "dependencies": {
     "element-ui": "^1.0.0-rc.5",
-    "immutable": "^3.8.2",
     "koa-cors": "0.0.16",
     "vue": "^2.0.1",
     "vue-resource": "^1.0.3",
     "vue-router": "^2.0.0",
-    "webpack-dev-server": "^2.9.3"
+    "webpack-dev-server": "^2.9.3",
+    "immutable": "latest"
   },
   "devDependencies": {
     "babel-core": "^6.0.0",

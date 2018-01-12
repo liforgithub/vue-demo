@@ -45,11 +45,13 @@
                                 <td>{{item.book_name}}</td>
                                 <td>{{item.book_author}}</td>
                                 <td>{{item.book_price}}</td>
+                                <td><a class="col-blue" href="javascript:void(0)" @click="editBook(item)">修改</a></td>
                             </tr>
                             </tbody>
                         </table>
                     </div>
                     <Paging :page-obj="{pageObj}" @call="changePageNum"></Paging>
+                    <EditBook :edit-item="{editItem}" @call="updateBookDetail"></EditBook>
                 </div>
             </div>
         </div>
@@ -57,15 +59,19 @@
 </template>
 
 <script>
+    import Immutable from 'immutable';
     import Head from '../component/head.vue';
     import Left from '../component/left.vue';
     import Paging from '../component/paging.vue';
+
+    import EditBook from './components/editBook.vue';
     import request from '../../util/request';
 
     export default {
         name: "booklist",
         data() {
             return {
+                editItem: {},
                 search: {
                     bookName: ''
                 },
@@ -82,7 +88,8 @@
         components: {
             Head,
             Left,
-            Paging
+            Paging,
+            EditBook
         },
         created() {
             this.queryBookList();
@@ -94,6 +101,10 @@
             },
             resetBookName() {
                 this.search.bookName = '';
+            },
+            editBook(item) {
+                this.editItem = Immutable.fromJS(item).toJS();
+                $("#alertEditTextPic").modal("show");
             },
             queryBookList(type = '') {
                 if (type === 'search') {
@@ -111,6 +122,15 @@
                     .then(res => {
                         this.bookObj.items = res.dataList;
                         this.pageObj.totalCount = res.totalCount;
+                    });
+            },
+            updateBookDetail(item) {
+                request
+                    .post('/api/books/update', item)
+                    .then(res => {
+                        if (res.result === 'ok') {
+                            this.queryBookList();
+                        }
                     });
             }
         }
