@@ -46,39 +46,37 @@
                     this.totalCount = val.pageObj.totalCount;
                     this.pageSize = val.pageObj.pageSize;
 
-                    var pageNum = this.pageNum;
-                    var totalCount = this.totalCount;
-                    var pageSize = this.pageSize;
+                    let pageNum = this.pageNum;
+                    let totalCount = this.totalCount;
+                    let pageSize = this.pageSize;
 
-                    console.log(pageNum + ' ' + totalCount + ' ' + pageSize);
-
-                    var totalPageNum = 0;
+                    let totalPageNum = 0;
                     if (totalCount % pageSize > 0) {
                         totalPageNum = parseInt(totalCount / pageSize) + 1;
                     } else {
                         totalPageNum = parseInt(totalCount / pageSize);
                     }
 
-                    var afterNum = [], beforeNum = [];
+                    let afterNum = [], beforeNum = [];
 
-                    var startPageNum = pageNum;
+                    let startPageNum = pageNum;
                     while (startPageNum + 1 <= totalPageNum && afterNum.length < 2) {
                         afterNum.push(startPageNum + 1);
                         startPageNum = startPageNum + 1;
                     }
 
-                    var startPageNum = pageNum;
+                    startPageNum = pageNum;
                     while (startPageNum - 1 >= 1 && beforeNum.length < 2) {
                         beforeNum.push(startPageNum - 1);
                         startPageNum = startPageNum - 1;
                     }
 
-                    var allNumList = [];
-                    for (var i = beforeNum.length - 1; i >= 0; i--) {
+                    let allNumList = [];
+                    for (let i = beforeNum.length - 1; i >= 0; i--) {
                         allNumList.push(beforeNum[i]);
                     }
                     allNumList.push(pageNum);
-                    for (var i = 0; i <= afterNum.length - 1; i++) {
+                    for (let i = 0; i <= afterNum.length - 1; i++) {
                         allNumList.push(afterNum[i]);
                     }
 

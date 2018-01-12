@@ -15,14 +15,16 @@
                                 <td>
                                     <div class="search-left">图书名称：</div>
                                     <div class="search-right">
-                                        <label class="input-icon"><input placeholder="图书名称" class="form-input"
-                                                                         type="text"/></label>
+                                        <label class="input-icon">
+                                            <input placeholder="图书名称" class="form-input" v-model="search.bookName"
+                                                   type="text"/>
+                                        </label>
                                     </div>
                                 </td>
                             </div>
                             <div class="search-cont">
-                                <a class="btn btn-sm btn-primary">搜索</a>&nbsp;&nbsp;&nbsp;
-                                <a class="btn btn-sm" style='background-color: gray; color: white'>重置</a>
+                                <a class="btn btn-sm btn-primary" @click="queryBookList('search')">搜索</a>&nbsp;&nbsp;&nbsp;
+                                <a class="btn btn-sm" style='background-color: gray; color: white' @click="resetBookName">重置</a>
                             </div>
                         </table>
                     </div>
@@ -47,7 +49,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <Paging :page-obj="{pageObj}" @call="changePageNum" :page="page"></Paging>
+                    <Paging :page-obj="{pageObj}" @call="changePageNum"></Paging>
                 </div>
             </div>
         </div>
@@ -64,6 +66,9 @@
         name: "booklist",
         data() {
             return {
+                search: {
+                    bookName: ''
+                },
                 bookObj: {
                     items: []
                 },
@@ -87,9 +92,19 @@
                 this.pageObj.pageNum = page;
                 this.queryBookList();
             },
-            queryBookList() {
+            resetBookName() {
+                this.search.bookName = '';
+            },
+            queryBookList(type = '') {
+                if (type === 'search') {
+                    //重新搜索，初始化分页条件
+                    this.pageObj.pageNum = 1;
+                    this.pageObj.pageSize = 10;
+                    this.pageObj.totalCount = 0;
+                }
                 request
                     .get('/api/books/getBookList', {
+                        bookName: this.search.bookName,
                         pageNum: this.pageObj.pageNum - 1,
                         pageSize: this.pageObj.pageSize
                     })
@@ -101,7 +116,3 @@
         }
     }
 </script>
-
-<style scoped>
-
-</style>
