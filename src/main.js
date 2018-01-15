@@ -14,6 +14,8 @@ Vue.use(VueRouter);
 Vue.use(VueResource);
 
 import booklist from './modules/book/booklist.vue';
+import search from './modules/search/searchengines.vue';
+import bookdetail from './modules/book/detail/bookdetail.vue';
 
 
 // 创建一个路由器实例
@@ -28,8 +30,24 @@ const router = new VueRouter({
         },
         {
             path: '/booklist',
-            component: booklist
-        }
+            component: booklist,
+            // children: [
+            //     {
+            //         name: 'detail',
+            //         path: '/booklist/detail',
+            //         component: bookdetail
+            //     }
+            // ]
+        },
+        {
+            name: 'detail',
+            path: '/booklist/detail',
+            component: bookdetail
+        },
+        {
+            path: '/search',
+            component: search
+        },
     ]
 });
 

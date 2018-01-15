@@ -2,7 +2,7 @@
     <div>
         <Head></Head>
         <div class="contain">
-            <Left></Left>
+            <Left choose-tab="booklist"></Left>
             <div class="right-content">
                 <h3>图书管理</h3>
                 <div class="content">
@@ -24,7 +24,8 @@
                             </div>
                             <div class="search-cont">
                                 <a class="btn btn-sm btn-primary" @click="queryBookList('search')">搜索</a>&nbsp;&nbsp;&nbsp;
-                                <a class="btn btn-sm" style='background-color: gray; color: white' @click="resetBookName">重置</a>
+                                <a class="btn btn-sm" style='background-color: gray; color: white'
+                                   @click="resetBookName">重置</a>
                             </div>
                         </table>
                     </div>
@@ -45,7 +46,10 @@
                                 <td>{{item.book_name}}</td>
                                 <td>{{item.book_author}}</td>
                                 <td>{{item.book_price}}</td>
-                                <td><a class="col-blue" href="javascript:void(0)" @click="editBook(item)">修改</a></td>
+                                <td>
+                                    <a class="col-blue" href="javascript:void(0)" @click="lookBook(item)">查看</a>
+                                    <a class="col-blue" href="javascript:void(0)" @click="editBook(item)">修改</a>
+                                </td>
                             </tr>
                             </tbody>
                         </table>
@@ -101,6 +105,10 @@
             },
             resetBookName() {
                 this.search.bookName = '';
+            },
+            lookBook(item) {
+                //由于动态路由也是传递params的，所以在 this.$router.push() 方法中path不能和params一起使用，否则params将无效。需要用name来指定页面。
+                this.$router.push({name: 'detail', params: {bookDetail: item}})
             },
             editBook(item) {
                 this.editItem = Immutable.fromJS(item).toJS();
